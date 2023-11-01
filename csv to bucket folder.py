@@ -19,7 +19,7 @@ file_path=[r"C:\Users\madhura.uppar\Downloads\New folder\TEST1\Customers.csv",
            r"C:\Users\madhura.uppar\Downloads\New folder\TEST1\Productlines.csv"]
 for i in range(len(folder_name)):
     print('yes')
-    files_to_bucket(bucket_name, folder_name[i], file_path[i],'cm10')
+    files_to_bucket(bucket_name, folder_name[i], file_path[i],'cm14')
 
 
 

@@ -8,7 +8,7 @@ connection = oracledb.connect('g23madhura/g23madhura123@54.224.209.13:1521/xe')
 cursor = connection.cursor()
 
 for table_name in table_names:
-    cursor.execute(f"SELECT * FROM CM_20050610.{table_name} where to_char(update_timestamp,'yyyy-mm-dd')>='2005-06-10' ")
+    cursor.execute(f"SELECT * FROM CM_20050614.{table_name} where to_char(update_timestamp,'yyyy-mm-dd')>='2005-06-14' ")
 
     column_names = [i[0] for i in cursor.description]
     rows = cursor.fetchall()
