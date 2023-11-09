@@ -7,9 +7,9 @@ oracledb.init_oracle_client(lib_dir=d)
 connection = oracledb.connect('g23madhura/g23madhura123@54.224.209.13:1521/xe')
 cursor = connection.cursor()
 
-schema_name = 'cm_20050610'
-identified = 'cm_20050610123'
-etl_batch_date = '2005-06-10'
+schema_name = 'cm_20050609'
+identified = 'cm_20050609123'
+etl_batch_date = '2001-01-01'
 cursor.execute(f'Drop public database link madhura_dblink')
 
 query= f"CREATE PUBLIC database link madhura_dblink CONNECT TO {schema_name} IDENTIFIED BY {identified} USING 'XE'"
