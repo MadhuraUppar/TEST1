@@ -1,7 +1,7 @@
 import oracledb
 import csv
 
-table_names=["Offices", "Productlines", "Employees", "Customers", "Payments","Orders","Products", "Orderdetails","Calendar"]
+table_names=["Offices", "Productlines", "Employees", "Customers", "Payments","Orders","Products", "Orderdetails"]
 d = r"C:\Users\madhura.uppar\Downloads\instantclient-basic-windows.x64-21.12.0.0.0dbru\instantclient_21_12"
 oracledb.init_oracle_client(lib_dir=d)
 connection = oracledb.connect('g23madhura/g23madhura123@54.224.209.13:1521/xe')
