@@ -18,16 +18,12 @@ redshift_table = 'stage.payments'
 # SQL COPY command to load data from S3 to Redshift
 
 copy_sql = f"""
-    COPY {redshift_table} (employeeNumber,lastName,
-firstName,
-extension,
-email,
-officeCode,
-reportsTo,
-jobTitle,
-create_timestamp,
-update_timestamp
-) 
+    COPY {redshift_table} (CUSTOMERNUMBER
+, CHECKNUMBER
+, PAYMENTDATE
+, AMOUNT
+, CREATE_TIMESTAMP
+, UPDATE_TIMESTAMP) 
     FROM 's3://{s3_bucket}/{s3_prefix}'
     IAM_ROLE 'arn:aws:iam::115203216969:role/service-role/AmazonRedshift-CommandsAccessRole-20231102T151525' 
     FORMAT AS CSV DELIMITER ',' QUOTE '"' ACCEPTINVCHARS '_' 
