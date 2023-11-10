@@ -1,5 +1,6 @@
 import psycopg2 as pg
 import boto3
+import setvariable as sv
 
 # Redshift connection parameters
 host = 'default-workgroup.115203216969.us-east-1.redshift-serverless.amazonaws.com'
@@ -10,7 +11,7 @@ port = '5439'  # Adjust the port as needed
 s3 = boto3.client('s3') 
 # S3 location of the data to be loaded
 s3_bucket = 'madhura-s3bucket'
-s3_prefix = 'offices/cm9'
+table_name='offices'
 
 # Redshift table name where data will be loaded
 redshift_table = 'stage.offices'
@@ -20,7 +21,7 @@ redshift_table = 'stage.offices'
 copy_sql = f"""
     COPY {redshift_table} 
     (officecode, city, phone, addressline1, addressline2, state, country, postalcode, territory, create_timestamp, update_timestamp) 
-    FROM 's3://{s3_bucket}/{s3_prefix}' 
+    FROM 's3://{s3_bucket}/{table_name}/{sv.date}/{table_name}' 
     IAM_ROLE 'arn:aws:iam::115203216969:role/service-role/AmazonRedshift-CommandsAccessRole-20231102T151525' 
     FORMAT AS CSV DELIMITER ',' QUOTE '"' 
     IGNOREHEADER 1 
