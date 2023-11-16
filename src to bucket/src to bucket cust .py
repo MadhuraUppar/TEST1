@@ -2,7 +2,9 @@ import oracledb
 import boto3
 import io
 import csv
-import dblink as db
+import sys
+sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
+import mainsetvariable as mn
 
 print('Execution started')
 # Set up Oracle and S3 connection
@@ -13,7 +15,7 @@ connection = oracledb.connect('g23madhura/g23madhura123@54.224.209.13:1521/xe')
 s3 = boto3.client('s3')
 bucket_name = 'madhura-s3bucket'
 table_name = 'customers'
-etl_batch_date = db.etl_batch_date
+etl_batch_date = mn.etl_batch_date
 
 
 try: 

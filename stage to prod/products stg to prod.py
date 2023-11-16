@@ -1,5 +1,7 @@
 import psycopg2
-import etl as etl
+import sys
+sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
+import mainsetvariable as mn
 
 def copy_data_between_schemas(source_schema, target_schema, table_name):
     # Redshift connection parameters
@@ -28,8 +30,8 @@ set
    dw_product_line_id = w.dw_product_line_id,
    src_update_timestamp = s.update_timestamp,
    dw_update_timestamp = CURRENT_TIMESTAMP,
-   etl_batch_no={etl.batch_no},
-   etl_batch_date= cast('{etl.batch_date}' as date)
+   etl_batch_no={mn.etl_batch_n0},
+   etl_batch_date= cast('{mn.etl_batch_date}' as date)
 from stage.products  s
 join prod.productlines w
 on s.productLine = w.productLine
@@ -70,8 +72,8 @@ select
    s.update_timestamp,
    current_timestamp,
    current_timestamp,
-   {etl.batch_no},
-   cast('{etl.batch_date}' as date)
+   {mn.etl_batch_n0},
+   cast('{mn.etl_batch_date}' as date)
 from stage.products s
 join prod.productlines w
 on s.productLine = w.productLine

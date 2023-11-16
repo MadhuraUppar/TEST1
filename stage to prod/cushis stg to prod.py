@@ -1,5 +1,7 @@
 import psycopg2
-import etl as etl
+import sys
+sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
+import mainsetvariable as mn
 
 def copy_data_between_schemas(source_schema, target_schema, table_name):
     # Redshift connection parameters
@@ -17,11 +19,11 @@ def copy_data_between_schemas(source_schema, target_schema, table_name):
         # Build the COPY command to move data between schemas
         copy_command = f"""update prod.customer_history a
 set 
-effective_to_date = DATEADD(day, 1,cast('{etl.batch_date}' as date)),
+effective_to_date = DATEADD(day, 1,cast('{mn.etl_batch_date}' as date)),
 dw_active_record_ind = 0,
 dw_update_timestamp = current_timestamp,
-update_etl_batch_no= {etl.batch_no},
-update_etl_batch_date= cast('{etl.batch_date}' as date)
+update_etl_batch_no= {mn.etl_batch_n0},
+update_etl_batch_date= cast('{mn.etl_batch_date}' as date)
 from prod.customers b
 where a.dw_customer_id = b.dw_customer_id 
       and a.dw_active_record_ind=1 
@@ -38,12 +40,12 @@ create_etl_batch_no,
 create_etl_batch_date)
 select d.dw_customer_id,
 d.creditlimit,
-cast('{etl.batch_date}' as date),
+cast('{mn.etl_batch_date}' as date),
 1 dw_active_record_ind,
 current_timestamp,
 current_timestamp,
-{etl.batch_no},
-cast('{etl.batch_date}' as date)
+{mn.etl_batch_n0},
+cast('{mn.etl_batch_date}' as date)
 from prod.customers d left join (select dw_customer_id from prod.customer_history  where dw_active_record_ind = 1) g 
 on d.dw_customer_id = g.dw_customer_id
 where g.dw_customer_id is null;

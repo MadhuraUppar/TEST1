@@ -1,5 +1,7 @@
 import psycopg2
-import etl as etl
+import sys
+sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
+import mainsetvariable as mn
 
 def copy_data_between_schemas(source_schema, target_schema, table_name):
     # Redshift connection parameters
@@ -58,8 +60,8 @@ SELECT d.Summary_date,
        0,
        current_timestamp,
        current_timestamp,
-       {etl.batch_no},
-       cast('{etl.batch_date}' as date)
+       {mn.etl_batch_n0},
+       cast('{mn.etl_batch_date}' as date)
 FROM (SELECT o.orderDate AS Summary_date,
              o.dw_customer_id,
              COUNT(DISTINCT o.dw_order_id) AS order_count,
@@ -80,7 +82,7 @@ FROM (SELECT o.orderDate AS Summary_date,
       FROM prod.orders o
         JOIN prod.orderdetails od ON o.dw_order_id = od.dw_order_id
         JOIN prod.products p ON p.dw_product_id = od.dw_product_id
-      WHERE o.orderDate >= cast('{etl.batch_date}' as date)
+      WHERE o.orderDate >= cast('{mn.etl_batch_date}' as date)
       GROUP BY o.orderDate,
                o.dw_customer_id
       UNION ALL
@@ -103,7 +105,7 @@ FROM (SELECT o.orderDate AS Summary_date,
              0 AS new_cust_apd
       FROM prod.orders o
         JOIN prod.orderdetails od ON o.dw_order_id = od.dw_order_id
-      WHERE o.cancelledDate >= cast('{etl.batch_date}' as date)
+      WHERE o.cancelledDate >= cast('{mn.etl_batch_date}' as date)
       GROUP BY o.cancelledDate,
                o.dw_customer_id
       UNION ALL
@@ -126,7 +128,7 @@ FROM (SELECT o.orderDate AS Summary_date,
              0 AS new_cust_apd
       FROM prod.orders o
         JOIN prod.orderdetails od ON o.dw_order_id = od.dw_order_id
-      WHERE o.shippedDate >= cast('{etl.batch_date}' as date)
+      WHERE o.shippedDate >= cast('{mn.etl_batch_date}' as date)
       GROUP BY o.shippedDate,
                o.dw_customer_id
       UNION ALL
@@ -149,7 +151,7 @@ FROM (SELECT o.orderDate AS Summary_date,
              SUM(amount) AS payment_amount,
              0 AS new_cust_apd
       FROM prod.payments
-      WHERE paymentDate >= cast('{etl.batch_date}' as date)
+      WHERE paymentDate >= cast('{mn.etl_batch_date}' as date)
       GROUP BY paymentDate,
                dw_customer_id
       UNION ALL
@@ -172,7 +174,7 @@ FROM (SELECT o.orderDate AS Summary_date,
              0 AS payment_amt,
              1 AS new_cust_apd
       FROM prod.customers
-      WHERE DATE (src_create_timestamp) >= cast('{etl.batch_date}' as date)) d
+      WHERE DATE (src_create_timestamp) >= cast('{mn.etl_batch_date}' as date)) d
 GROUP BY d.Summary_date,
          d.dw_customer_id;
 
@@ -186,7 +188,7 @@ from (SELECT t1.dw_customer_id,
              FROM prod.daily_customer_summary
              WHERE order_apd = 1
              GROUP BY 1) t1
-        WHERE t1.fod >= cast('{etl.batch_date}' as date)) dcs2
+        WHERE t1.fod >= cast('{mn.etl_batch_date}' as date)) dcs2
 where dcs1.dw_customer_id=dcs2.dw_customer_id and dcs1.summary_date=dcs2.fod;
 
 

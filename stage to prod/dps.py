@@ -1,5 +1,7 @@
 import psycopg2
-import etl as etl
+import sys
+sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
+import mainsetvariable as mn
 
 def copy_data_between_schemas(source_schema, target_schema, table_name):
     # Redshift connection parameters
@@ -40,8 +42,8 @@ SELECT d.summary_date,
        MAX(d.cancelled_order_apd) AS cancelled_order_apd,
        current_timestamp,
        current_timestamp,
-       {etl.batch_no},
-       cast('{etl.batch_date}' as date)
+       {mn.etl_batch_n0},
+       cast('{mn.etl_batch_date}' as date)
 FROM (SELECT o.orderdate AS summary_date,
              od.dw_product_id,
              1 AS customer_apd,
@@ -54,7 +56,7 @@ FROM (SELECT o.orderdate AS summary_date,
       FROM prod.orderdetails od
         JOIN prod.orders o ON od.dw_order_id = o.dw_order_id
         JOIN prod.products p ON p.dw_product_id = od.dw_product_id
-      WHERE o.orderdate >= cast('{etl.batch_date}' as date)
+      WHERE o.orderdate >= cast('{mn.etl_batch_date}' as date)
       GROUP BY o.orderdate,
                od.dw_product_id
       UNION ALL
@@ -70,7 +72,7 @@ FROM (SELECT o.orderdate AS summary_date,
       FROM prod.orderdetails od
         JOIN prod.orders o ON od.dw_order_id = o.dw_order_id
         JOIN prod.products p ON p.dw_product_id = od.dw_product_id
-      WHERE o.cancelledDate >= cast('{etl.batch_date}' as date)
+      WHERE o.cancelledDate >= cast('{mn.etl_batch_date}' as date)
       GROUP BY o.cancelledDate,
                od.dw_product_id) d
 GROUP BY d.summary_date,

@@ -1,6 +1,8 @@
 import psycopg2 as pg
 import boto3
-import setvariable as sv
+import sys
+sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
+import mainsetvariable as mn
 
 # Redshift connection parameters
 host = 'default-workgroup.115203216969.us-east-1.redshift-serverless.amazonaws.com'
@@ -29,7 +31,7 @@ jobTitle,
 create_timestamp,
 update_timestamp
 ) 
-    FROM 's3://{s3_bucket}/{table_name}/{sv.date}/{table_name}'
+    FROM 's3://{s3_bucket}/{table_name}/{mn.etl_batch_date}/{table_name}'
     IAM_ROLE 'arn:aws:iam::115203216969:role/service-role/AmazonRedshift-CommandsAccessRole-20231102T151525' 
     FORMAT AS CSV DELIMITER ',' QUOTE '"' ACCEPTINVCHARS '_' 
     IGNOREHEADER 1 EMPTYASNULL 

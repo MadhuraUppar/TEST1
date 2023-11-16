@@ -1,5 +1,7 @@
 import psycopg2
-import etl as etl
+import sys
+sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
+import mainsetvariable as mn
 
 def copy_data_between_schemas(source_schema, target_schema, table_name):
     # Redshift connection parameters
@@ -15,7 +17,7 @@ def copy_data_between_schemas(source_schema, target_schema, table_name):
 
     try:
         # Build the COPY command to move data between schemas
-        copy_command = f"""delete from prod.monthly_customer_summary where start_of_the_month_date>=DATE_TRUNC('MONTH', CAST('{etl.batch_date}' AS DATE));
+        copy_command = f"""delete from prod.monthly_customer_summary where start_of_the_month_date>=DATE_TRUNC('MONTH', CAST('{mn.etl_batch_date}' AS DATE));
 
 INSERT INTO prod.monthly_customer_summary
 (
@@ -89,11 +91,11 @@ SELECT date_trunc('MONTH',d.summary_date) AS start_of_the_month,
        CASE when SUM(d.new_customer_paid_apd)>0 then 1 else 0 end as new_customer_paid_apm,
        current_timestamp,
        current_timestamp,
-      {etl.batch_no},
-      cast('{etl.batch_date}' as date)
+      {mn.etl_batch_n0},
+      cast('{mn.etl_batch_date}' as date)
 
 FROM prod.daily_customer_summary d
-where date_trunc('MONTH',d.summary_date) >= DATE_TRUNC('MONTH', CAST('{etl.batch_date}' AS DATE))
+where date_trunc('MONTH',d.summary_date) >= DATE_TRUNC('MONTH', CAST('{mn.etl_batch_date}' AS DATE))
 
 GROUP BY 1,
          2;

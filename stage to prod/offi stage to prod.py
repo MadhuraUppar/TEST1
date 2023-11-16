@@ -1,5 +1,7 @@
 import psycopg2
-import etl as etl
+import sys
+sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
+import mainsetvariable as mn
 
 def copy_data_between_schemas(source_schema, target_schema, table_name):
     # Redshift connection parameters
@@ -29,8 +31,8 @@ territory=o2.territory,
 src_create_timestamp=o2.create_timestamp,
 src_update_timestamp=o2.update_timestamp,
 dw_update_timestamp= current_timestamp,
-etl_batch_no = {etl.batch_no},
-etl_batch_date= cast('{etl.batch_date}' as date)
+etl_batch_no = {mn.etl_batch_n0},
+etl_batch_date= cast('{mn.etl_batch_date}' as date)
 from stage.offices o2
 where o1.officecode=o2.officecode;
 
@@ -65,8 +67,8 @@ o1.create_timestamp,
 o1.update_timestamp,
 current_timestamp,
 current_timestamp,
-{etl.batch_no},
-cast('{etl.batch_date}' as date)
+{mn.etl_batch_n0},
+cast('{mn.etl_batch_date}' as date)
 from
 stage.offices o1
 left join prod.offices o2 
