@@ -20,7 +20,7 @@ redshift_table = 'stage.employees'
 
 # SQL COPY command to load data from S3 to Redshift
 
-copy_sql = f"""
+copy_sql = f"""truncate {redshift_table};
     COPY {redshift_table} (employeeNumber,lastName,
 firstName,
 extension,

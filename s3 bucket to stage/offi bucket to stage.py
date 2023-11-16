@@ -20,7 +20,7 @@ redshift_table = 'stage.offices'
 
 # SQL COPY command to load data from S3 to Redshift
 
-copy_sql = f"""
+copy_sql = f"""truncate {redshift_table};
     COPY {redshift_table} 
     (officecode, city, phone, addressline1, addressline2, state, country, postalcode, territory, create_timestamp, update_timestamp) 
     FROM 's3://{s3_bucket}/{table_name}/{mn.etl_batch_date}/{table_name}' 

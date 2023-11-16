@@ -22,7 +22,7 @@ redshift_table = 'stage.customers'
 
 # SQL COPY command to load data from S3 to Redshift
 
-copy_sql = f"""
+copy_sql = f"""truncate {redshift_table};
     COPY {redshift_table} (customernumber, customername, contactlastname, contactfirstname, phone, addressline1, addressline2, city, state, postalcode, country, salesrepemployeenumber, creditlimit, create_timestamp, update_timestamp) 
     FROM 's3://{s3_bucket}/{table_name}/{mn.etl_batch_date}/{table_name}'
     IAM_ROLE 'arn:aws:iam::115203216969:role/service-role/AmazonRedshift-CommandsAccessRole-20231102T151525' 
