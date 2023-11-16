@@ -19,7 +19,7 @@ def copy_data_between_schemas(source_schema, target_schema, table_name):
         # Build the COPY command to move data between schemas
         copy_command = f"""update prod.customer_history a
 set 
-effective_to_date = DATEADD(day, 1,cast('{mn.etl_batch_date}' as date)),
+effective_to_date = DATEADD(day,-1,cast('{mn.etl_batch_date}' as date)),
 dw_active_record_ind = 0,
 dw_update_timestamp = current_timestamp,
 update_etl_batch_no= {mn.etl_batch_n0},
