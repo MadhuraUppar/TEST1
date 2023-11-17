@@ -1,25 +1,24 @@
+import concurrent.futures
 import subprocess
 
-def run_another_script(script_path):
+def run_script(script_path):
     try:
         subprocess.run(['python', script_path], check=True)
-        print(f"{script_path} is runned succesfully")
+        print(f"{script_path} uploaded successfully to bucket")
     except subprocess.CalledProcessError as e:
-        print(f"Error running the script: {e}")
+        print(f"Error running the script {script_path}: {e}")
 
-if __name__ == "__main__":
-    file_paths=['cust bucket to stage.py',
-                'emp bucket to stage.py',
-                'offi bucket to stage.py',
-                'orderdetails bucket to stage.py',
-                'orders bucket to stage.py',
-                'payments bucket to stage.py',
-                'productlines stage to bucket.py',
-                'products bucket to stage.py'
+if __name__== "__main__":
+    file_paths=['s3 bucket to stage/cust bucket to stage.py',
+                's3 bucket to stage/emp bucket to stage.py',
+                's3 bucket to stage/offi bucket to stage.py',
+                's3 bucket to stage/orderdetails bucket to stage.py',
+                's3 bucket to stage/orders bucket to stage.py',
+                's3 bucket to stage/payments bucket to stage.py',
+                's3 bucket to stage/productlines stage to bucket.py',
+                's3 bucket to stage/products bucket to stage.py'
                 ]
-    for i in file_paths:
-        path=i
-        folder = 's3 bucket to stage'
-        print(f"{i}")
-        script_to_run = f'{folder}/{path}' # Replace with the actual path of the script you want to run
-        run_another_script(script_to_run)
+     
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        
+        executor.map(run_script, file_paths)

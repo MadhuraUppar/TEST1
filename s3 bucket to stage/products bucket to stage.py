@@ -16,7 +16,7 @@ s3_bucket = 'madhura-s3bucket'
 table_name='products'
 
 # Redshift table name where data will be loaded
-redshift_table = 'stage.products'
+redshift_table = 'devstage.products'
 
 # SQL COPY command to load data from S3 to Redshift
 

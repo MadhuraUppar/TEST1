@@ -18,7 +18,7 @@ def copy_data_between_schemas(source_schema, target_schema, table_name):
     try:
         # Build the COPY command to move data between schemas
         copy_command = f"""
-insert into prod.daily_customer_summary (summary_date,
+insert into devdw.daily_customer_summary (summary_date,
 dw_customer_id,
 order_count,
 order_apd,
@@ -79,9 +79,9 @@ FROM (SELECT o.orderDate AS Summary_date,
              0 AS payment_apd,
              0 AS payment_amount,
              0 AS new_customer_apd
-      FROM prod.orders o
-        JOIN prod.orderdetails od ON o.dw_order_id = od.dw_order_id
-        JOIN prod.products p ON p.dw_product_id = od.dw_product_id
+      FROM devdw.orders o
+        JOIN devdw.orderdetails od ON o.dw_order_id = od.dw_order_id
+        JOIN devdw.products p ON p.dw_product_id = od.dw_product_id
       WHERE o.orderDate >= cast('{mn.etl_batch_date}' as date)
       GROUP BY o.orderDate,
                o.dw_customer_id
@@ -103,8 +103,8 @@ FROM (SELECT o.orderDate AS Summary_date,
              0 AS payment_apd,
              0 AS payment_amt,
              0 AS new_cust_apd
-      FROM prod.orders o
-        JOIN prod.orderdetails od ON o.dw_order_id = od.dw_order_id
+      FROM devdw.orders o
+        JOIN devdw.orderdetails od ON o.dw_order_id = od.dw_order_id
       WHERE o.cancelledDate >= cast('{mn.etl_batch_date}' as date)
       GROUP BY o.cancelledDate,
                o.dw_customer_id
@@ -126,8 +126,8 @@ FROM (SELECT o.orderDate AS Summary_date,
              0 AS payment_apd,
              0 AS payment_amt,
              0 AS new_cust_apd
-      FROM prod.orders o
-        JOIN prod.orderdetails od ON o.dw_order_id = od.dw_order_id
+      FROM devdw.orders o
+        JOIN devdw.orderdetails od ON o.dw_order_id = od.dw_order_id
       WHERE o.shippedDate >= cast('{mn.etl_batch_date}' as date)
       GROUP BY o.shippedDate,
                o.dw_customer_id
@@ -150,7 +150,7 @@ FROM (SELECT o.orderDate AS Summary_date,
              1 AS payment_apd,
              SUM(amount) AS payment_amount,
              0 AS new_cust_apd
-      FROM prod.payments
+      FROM devdw.payments
       WHERE paymentDate >= cast('{mn.etl_batch_date}' as date)
       GROUP BY paymentDate,
                dw_customer_id
@@ -173,19 +173,19 @@ FROM (SELECT o.orderDate AS Summary_date,
              0 AS payment_apd,
              0 AS payment_amt,
              1 AS new_cust_apd
-      FROM prod.customers
+      FROM devdw.customers
       WHERE DATE (src_create_timestamp) >= cast('{mn.etl_batch_date}' as date)) d
 GROUP BY d.Summary_date,
          d.dw_customer_id;
 
 
-UPDATE prod.daily_customer_summary dcs1
+UPDATE devdw.daily_customer_summary dcs1
 set new_customer_paid_apd = 1
 from (SELECT t1.dw_customer_id,
        t1.fod
        FROM (SELECT dw_customer_id,
              MIN(summary_date) AS fod
-             FROM prod.daily_customer_summary
+             FROM devdw.daily_customer_summary
              WHERE order_apd = 1
              GROUP BY 1) t1
         WHERE t1.fod >= cast('{mn.etl_batch_date}' as date)) dcs2

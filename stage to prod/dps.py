@@ -17,7 +17,7 @@ def copy_data_between_schemas(source_schema, target_schema, table_name):
 
     try:
         # Build the COPY command to move data between schemas
-        copy_command = f"""insert into prod.daily_product_summary
+        copy_command = f"""insert into devdw.daily_product_summary
 (summary_date,
 dw_product_id,
 customer_apd,
@@ -53,9 +53,9 @@ FROM (SELECT o.orderdate AS summary_date,
              0 AS cancelled_cost_amount,
              0 AS cancelled_mrp_amount,
              0 AS cancelled_order_apd
-      FROM prod.orderdetails od
-        JOIN prod.orders o ON od.dw_order_id = o.dw_order_id
-        JOIN prod.products p ON p.dw_product_id = od.dw_product_id
+      FROM devdw.orderdetails od
+        JOIN devdw.orders o ON od.dw_order_id = o.dw_order_id
+        JOIN devdw.products p ON p.dw_product_id = od.dw_product_id
       WHERE o.orderdate >= cast('{mn.etl_batch_date}' as date)
       GROUP BY o.orderdate,
                od.dw_product_id
@@ -69,9 +69,9 @@ FROM (SELECT o.orderdate AS summary_date,
              SUM(od.quantityOrdered*od.priceEach) AS cancelled_cost_amount,
              SUM(od.quantityOrdered*p.MSRP) AS cancelled_mrp_amount,
              1 AS cancelled_order_apd
-      FROM prod.orderdetails od
-        JOIN prod.orders o ON od.dw_order_id = o.dw_order_id
-        JOIN prod.products p ON p.dw_product_id = od.dw_product_id
+      FROM devdw.orderdetails od
+        JOIN devdw.orders o ON od.dw_order_id = o.dw_order_id
+        JOIN devdw.products p ON p.dw_product_id = od.dw_product_id
       WHERE o.cancelledDate >= cast('{mn.etl_batch_date}' as date)
       GROUP BY o.cancelledDate,
                od.dw_product_id) d

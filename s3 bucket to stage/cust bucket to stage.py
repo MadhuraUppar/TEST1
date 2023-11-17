@@ -18,7 +18,7 @@ table_name='customers'
 
 
 # Redshift table name where data will be loaded
-redshift_table = 'stage.customers'
+redshift_table = 'devstage.customers'
 
 # SQL COPY command to load data from S3 to Redshift
 

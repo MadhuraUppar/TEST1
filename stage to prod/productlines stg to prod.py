@@ -17,7 +17,7 @@ def copy_data_between_schemas(source_schema, target_schema, table_name):
 
     try:
         # Build the COPY command to move data between schemas
-        copy_command = f"""update prod.productlines z
+        copy_command = f"""update devdw.productlines z
 set    
    
    textDescription = s.textDescription,
@@ -26,10 +26,10 @@ set
    dw_update_timestamp = CURRENT_TIMESTAMP,
    etl_batch_no={mn.etl_batch_n0},
    etl_batch_date= cast('{mn.etl_batch_date}' as date)
-from stage.productlines s
+from devstage.productlines s
 where z.productLine = s.productLine;
 
-insert into prod.productlines
+insert into devdw.productlines
 (
   
    productLine,
@@ -49,8 +49,8 @@ select  s.productLine,
         current_timestamp,
        {mn.etl_batch_n0},
        cast('{mn.etl_batch_date}' as date)
-from stage.productlines s
-left join prod.productlines t
+from devstage.productlines s
+left join devdw.productlines t
 on s.productLine = t.productLine
 where t.productLine is null;
 """

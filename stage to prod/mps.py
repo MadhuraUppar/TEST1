@@ -17,9 +17,9 @@ def copy_data_between_schemas(source_schema, target_schema, table_name):
 
     try:
         # Build the COPY command to move data between schemas
-        copy_command = f"""delete from prod.monthly_product_summary where start_of_the_month_date>=DATE_TRUNC('MONTH', CAST('{mn.etl_batch_date}' AS DATE));
+        copy_command = f"""delete from devdw.monthly_product_summary where start_of_the_month_date>=DATE_TRUNC('MONTH', CAST('{mn.etl_batch_date}' AS DATE));
 
-INSERT INTO prod.monthly_product_summary
+INSERT INTO devdw.monthly_product_summary
 (
   start_of_the_month_date,
   dw_product_id,
@@ -58,7 +58,7 @@ SELECT date_trunc('MONTH',summary_date) AS start_of_the_month_date,
        current_timestamp,
        {mn.etl_batch_n0},
        cast('{mn.etl_batch_date}' as date)
-FROM prod.daily_product_summary
+FROM devdw.daily_product_summary
 where date_trunc('MONTH',summary_date)>=DATE_TRUNC('MONTH', CAST('{mn.etl_batch_date}' AS DATE))
 GROUP BY 1,
          2;
