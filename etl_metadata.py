@@ -1,7 +1,7 @@
 import psycopg2
-import sys
-sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
-import mainsetvariable as mn
+
+batch_date = '2008-01-01'
+batch_no = 1009
 
 def etl_tables_update(schemaname,table1,table2):
     # Redshift connection parameters
@@ -18,15 +18,15 @@ def etl_tables_update(schemaname,table1,table2):
     try:
         # Build the update command to update tables.
         update_command = f"""update {schemaname}.{table1}
-    set etl_batch_no = {mn.etl_batch_n0},
-        etl_batch_date = cast('{mn.etl_batch_date}' as date) ;
+    set etl_batch_no = {batch_no},
+        etl_batch_date = cast('{batch_date}' as date) ;
         
     insert into {schemaname}.{table2}(etl_batch_no,
     etl_batch_date,
     etl_batch_status,
     etl_batch_start_time) VALUES(
-    {mn.etl_batch_n0},
-    cast('{mn.etl_batch_date}' as date),
+    {batch_no},
+    cast('{batch_date}' as date),
     'O' ,
     current_timestamp );
     """

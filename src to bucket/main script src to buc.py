@@ -9,7 +9,7 @@ def run_script(script_path):
         print(f"Error running the script {script_path}: {e}")
 
 if __name__== "__main__":
-    file_paths=["src to bucket/etl_metadata.py",
+    file_paths=[
                 "src to bucket/src to bucket offi.py",
                 "src to bucket/src to bucket emp.py",
                 "src to bucket/src to bucket cust.py",

@@ -1,6 +1,7 @@
 import subprocess
 
-file_paths=["src to bucket/main script src to buc.py",
+file_paths=[
+         "src to bucket/main script src to buc.py",
          "s3 bucket to stage/main script s3 to stg.py",
          "stage to prod/main script stg to prod.py"
          ]
