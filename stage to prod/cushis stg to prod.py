@@ -3,7 +3,7 @@ import sys
 sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
 import mainsetvariable as mn
 
-def copy_data_between_schemas(source_schema, target_schema, table_name):
+def copy_data_between_schemas(table_name):
     # Redshift connection parameters
     host = 'default-workgroup.115203216969.us-east-1.redshift-serverless.amazonaws.com'
     port = '5439'
@@ -22,7 +22,7 @@ set
 effective_to_date = DATEADD(day,-1,cast('{mn.etl_batch_date}' as date)),
 dw_active_record_ind = 0,
 dw_update_timestamp = current_timestamp,
-update_etl_batch_no= {mn.etl_batch_n0},
+update_etl_batch_no= {mn.etl_batch_no},
 update_etl_batch_date= cast('{mn.etl_batch_date}' as date)
 from devdw.customers b
 where a.dw_customer_id = b.dw_customer_id 
@@ -44,7 +44,7 @@ cast('{mn.etl_batch_date}' as date),
 1 dw_active_record_ind,
 current_timestamp,
 current_timestamp,
-{mn.etl_batch_n0},
+{mn.etl_batch_no},
 cast('{mn.etl_batch_date}' as date)
 from devdw.customers d left join (select dw_customer_id from devdw.customer_history  where dw_active_record_ind = 1) g 
 on d.dw_customer_id = g.dw_customer_id
@@ -56,7 +56,7 @@ where g.dw_customer_id is null;
 
         # Commit the transaction
         conn.commit()
-        print(f"Data from {source_schema}.{table_name} copied to {target_schema}.{table_name} successfully.")
+        print(f"{table_name} successfully completed.")
         
 
     except Exception as e:
@@ -68,4 +68,4 @@ where g.dw_customer_id is null;
         conn.close()
 
 # Example usage
-copy_data_between_schemas('stage', 'prod', 'customer_history')
+copy_data_between_schemas('customer_history')

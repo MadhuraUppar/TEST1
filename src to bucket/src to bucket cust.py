@@ -6,7 +6,7 @@ import sys
 sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
 import mainsetvariable as mn
 
-print('Execution started')
+
 # Set up Oracle and S3 connection
 d = r"C:\Users\madhura.uppar\Downloads\instantclient-basic-windows.x64-21.12.0.0.0dbru\instantclient_21_12"
 oracledb.init_oracle_client(lib_dir=d)
@@ -17,7 +17,7 @@ bucket_name = 'madhura-s3bucket'
 table_name = 'customers'
 etl_batch_date = mn.etl_batch_date
 
-
+print(f"{table_name} src to bucket started")
 try: 
     cursor = connection.cursor()
 
@@ -26,7 +26,7 @@ try:
 
     # Fetch column names and data
     col_names = [i[0] for i in cursor.description]
-    print(col_names)
+   
     rows = cursor.fetchall()
 
     csv_data = io.StringIO()

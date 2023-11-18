@@ -3,7 +3,7 @@ import sys
 sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
 import mainsetvariable as mn
 
-def copy_data_between_schemas(source_schema, target_schema, table_name):
+def copy_data_between_schemas(table_name):
     # Redshift connection parameters
     host = 'default-workgroup.115203216969.us-east-1.redshift-serverless.amazonaws.com'
     port = '5439'
@@ -91,7 +91,7 @@ SELECT date_trunc('MONTH',d.summary_date) AS start_of_the_month,
        CASE when SUM(d.new_customer_paid_apd)>0 then 1 else 0 end as new_customer_paid_apm,
        current_timestamp,
        current_timestamp,
-      {mn.etl_batch_n0},
+      {mn.etl_batch_no},
       cast('{mn.etl_batch_date}' as date)
 
 FROM devdw.daily_customer_summary d
@@ -106,7 +106,7 @@ GROUP BY 1,
 
         # Commit the transaction
         conn.commit()
-        print(f"Data from {source_schema}.{table_name} copied to {target_schema}.{table_name} successfully.")
+        print(f"{table_name} successfully completed.")
         
 
     except Exception as e:
@@ -118,4 +118,4 @@ GROUP BY 1,
         conn.close()
 
 # Example usage
-copy_data_between_schemas('prod', 'prod', 'mcs')
+copy_data_between_schemas('mcs')

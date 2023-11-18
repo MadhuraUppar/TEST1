@@ -3,7 +3,7 @@ import sys
 sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
 import mainsetvariable as mn
 
-def copy_data_between_schemas(source_schema, target_schema, table_name):
+def copy_data_between_schemas(table_name):
     # Redshift connection parameters
     host = 'default-workgroup.115203216969.us-east-1.redshift-serverless.amazonaws.com'
     port = '5439'
@@ -42,7 +42,7 @@ SELECT d.summary_date,
        MAX(d.cancelled_order_apd) AS cancelled_order_apd,
        current_timestamp,
        current_timestamp,
-       {mn.etl_batch_n0},
+       {mn.etl_batch_no},
        cast('{mn.etl_batch_date}' as date)
 FROM (SELECT o.orderdate AS summary_date,
              od.dw_product_id,
@@ -84,7 +84,7 @@ GROUP BY d.summary_date,
 
         # Commit the transaction
         conn.commit()
-        print(f"Data from {source_schema}.{table_name} copied to {target_schema}.{table_name} successfully.")
+        print(f"{table_name} successfully completed.")
         
 
     except Exception as e:
@@ -96,4 +96,4 @@ GROUP BY d.summary_date,
         conn.close()
 
 # Example usage
-copy_data_between_schemas('prod', 'prod', 'dps')
+copy_data_between_schemas('dps')

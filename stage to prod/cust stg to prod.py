@@ -33,7 +33,7 @@ set
    creditLimit =  s.creditLimit,
    src_update_timestamp = s.update_timestamp,
    dw_update_timestamp = CURRENT_TIMESTAMP,
-   etl_batch_no={mn.etl_batch_n0},
+   etl_batch_no={mn.etl_batch_no},
    etl_batch_date=cast('{mn.etl_batch_date}' as date)
 from devstage.customers  s
 where z.src_customerNumber = s.customerNumber;
@@ -77,7 +77,7 @@ select   s.customerNumber,
    s.update_timestamp,
 current_timestamp,
 current_timestamp,
-{mn.etl_batch_n0},
+{mn.etl_batch_no},
 cast('{mn.etl_batch_date}' as date)
 from devstage.customers s
 left join devdw.customers t

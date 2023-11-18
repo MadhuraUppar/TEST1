@@ -22,7 +22,7 @@ set effective_to_date=DATEADD(day,-1,cast('{mn.etl_batch_date}' as date)),
 dw_active_record_ind=0,
 dw_update_timestamp=current_timestamp,
 update_etl_batch_date=cast('{mn.etl_batch_date}' as date),
-update_etl_batch_no={mn.etl_batch_n0}
+update_etl_batch_no={mn.etl_batch_no}
 from devdw.products b
 where a.dw_product_id=b.dw_product_id and a.dw_active_record_ind=1 and a.MSRP<>b.MSRP;
 
@@ -41,7 +41,7 @@ cast('{mn.etl_batch_date}' as date),
 1,
 current_timestamp,
 current_timestamp,
-{mn.etl_batch_n0},
+{mn.etl_batch_no},
 cast('{mn.etl_batch_date}' as date)
 from devdw.products d left join(select dw_product_id from devdw.product_history where dw_active_record_ind=1) g
 on d.dw_product_id=g.dw_product_id

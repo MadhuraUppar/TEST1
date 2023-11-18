@@ -1,7 +1,7 @@
 import psycopg2
 
-batch_date = '2008-01-01'
-batch_no = 1009
+batch_date = '2005-06-14'
+batch_no = 1006
 
 def etl_tables_update(schemaname,table1,table2):
     # Redshift connection parameters

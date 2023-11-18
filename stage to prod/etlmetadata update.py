@@ -20,7 +20,7 @@ def etl_tables_update(schemaname,table1):
         update_command = f"""update {schemaname}.{table1}
 set etl_batch_end_time =current_timestamp,
 etl_batch_status='C' 
-where etl_batch_no={mn.etl_batch_n0} and etl_batch_status='O' ;
+where etl_batch_no={mn.etl_batch_no} and etl_batch_status='O' ;
     """
 
         # Execute the COPY command
