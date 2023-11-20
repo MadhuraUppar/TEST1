@@ -17,7 +17,7 @@ bucket_name = 'madhura-s3bucket'
 table_name = 'customers'
 etl_batch_date = mn.etl_batch_date
 
-print(f"{table_name} src to bucket started")
+
 try: 
     cursor = connection.cursor()
 

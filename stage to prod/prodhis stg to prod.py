@@ -3,7 +3,7 @@ import sys
 sys.path.append('C:/Users/madhura.uppar/Downloads/New folder/TEST1')
 import mainsetvariable as mn
 
-def copy_data_between_schemas(source_schema, target_schema, table_name):
+def copy_data_between_schemas(table_name):
     # Redshift connection parameters
     host = 'default-workgroup.115203216969.us-east-1.redshift-serverless.amazonaws.com'
     port = '5439'
@@ -53,7 +53,7 @@ where g.dw_product_id is null;
 
         # Commit the transaction
         conn.commit()
-        print(f"Data from {source_schema}.{table_name} copied to {target_schema}.{table_name} successfully.")
+        print(f"{table_name} copied successfully")
         
 
     except Exception as e:
@@ -65,4 +65,4 @@ where g.dw_product_id is null;
         conn.close()
 
 # Example usage
-copy_data_between_schemas('stage', 'prod', 'product_history')
+copy_data_between_schemas('product_history')

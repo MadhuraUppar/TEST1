@@ -4,7 +4,7 @@ import subprocess
 def run_script(script_path):
     try:
         subprocess.run(['python', script_path], check=True)
-        print(f"{script_path} uploaded successfully to bucket")
+        
     except subprocess.CalledProcessError as e:
         print(f"Error running the script {script_path}: {e}")
 

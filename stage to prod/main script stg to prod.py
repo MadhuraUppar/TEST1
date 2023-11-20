@@ -4,7 +4,7 @@ import concurrent.futures
 def run_another_script(script_path):
     try:
         subprocess.run(['python', script_path], check=True)
-        print(f"{script_path} is uploaded to prod")
+        
     except subprocess.CalledProcessError as e:
         print(f"Error running the script: {e}")
 
